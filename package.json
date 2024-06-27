@@ -1,0 +1,19 @@
+{
+  "name": "streamer-card",
+  "version": "1.0.0",
+  "description": "这是一个使用 Node.js、Express 和 Puppeteer 的项目，通过提供 API 生成和保存带有特定信息的卡片图像。",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "example": "node example1.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "puppeteer": "^22.12.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "3279799773@qq.com",
+  "license": "MIT"
+}
