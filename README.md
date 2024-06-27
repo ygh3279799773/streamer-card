@@ -1,24 +1,26 @@
-# 流光卡片API 使用文档
+# 流光卡片API
+
+帮助你可以通过ApiPost或其他任意工具进行自动化下载好看的卡片
+
+<p align="center">
+  <a href="./README_en.md">English</a> |
+  <a href="./README.md">简体中文</a>
+</p>
+
+## 🛸 在线使用
+
+- 海外版：https://www.streamertextcard.com/en
+- 国内版：https://fireflycard.shushiai.com/zh
 
 
 
-## 项目说明
+## 👨‍💻 使用
 
-此项目使用 Node.js、Express 和 Puppeteer 构建，通过提供一组 API 来生成和保存带有特定信息的卡片图像。确保你的 Node.js 版本大于 18 以保证项目正常运行。
+项目技术栈：Node + Express + Puppeteer
 
-项目跑起来后，可以使用ApiPost使用或其他工具
+注意node版本必须大于18
 
-
-
-## 技术栈
-
-- **Node.js** (必须大于 18)
-- **Express**
-- **Puppeteer**
-
-
-
-## 使用方式
+##### 使用方式
 
 ```bash
 # 安装依赖：
@@ -30,11 +32,9 @@ node example1.js
 
 
 
-## 接口说明
+##### 接口说明 POST /saveImg
 
-### POST /saveImg
-
-#### 请求字段
+##### 参数说明
 
 | 字段名        | 类型   | 描述                                    |
 | ------------- | ------ | --------------------------------------- |
@@ -52,7 +52,7 @@ node example1.js
 | `watermark`   | String | 水印                                    |
 | switchConfig  | Object | 展示控制                                |
 
-#### switchConfig参数说明
+##### switchConfig参数说明
 
 | 字段名        | 类型    | 描述     |
 | ------------- | ------- | -------- |
@@ -65,7 +65,7 @@ node example1.js
 | showQRCode    | Boolean | 二维码   |
 | showForeword  | Boolean | 前言     |
 
-#### color参数说明
+##### color参数说明
 
 ```js
 [
@@ -121,9 +121,7 @@ node example1.js
 ]
 ```
 
-
-
-#### 请求示例
+##### 请求示例
 
 ```json
 {
@@ -147,9 +145,7 @@ node example1.js
 }
 ```
 
-
-
-#### 响应示例
+##### 响应示例
 
 > 会直接响应二进制图片
 
