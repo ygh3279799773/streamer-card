@@ -43,8 +43,7 @@ app.post('/saveImg', [jsonParser, urlEncodeParser], async (req, res) => {
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
     const page = await browser.newPage()
-    console.log(params)
-    const url = `http://192.168.113.72:3000/zh${params}`
+    const url = `https://fireflycard.shushiai.com/zh${params}`
     await page.goto(url)
     await page.setViewport({width: 1920, height: 1080});
     if (iconSrc && iconSrc.startsWith('http')) {

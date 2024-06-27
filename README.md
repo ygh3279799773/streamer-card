@@ -7,6 +7,8 @@
   <a href="./README.md">简体中文</a>
 </p>
 
+<video src="./video.mp4" controls></video>
+
 ## 🛸 在线使用
 
 - 海外版：https://www.streamertextcard.com/en
