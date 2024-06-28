@@ -1,7 +1,8 @@
 <div align="center">
 <a href="https://fastgpt.in/"><img src="./assets/logo.png" width="120" height="120" alt="fastgpt logo"></a>
+</div>
 
-## 流光卡片 API
+<h2 align="center">流光卡片 API</h2>
 
 通过流光卡片 API 你可以通过使用将精美卡片生成对接到您的程序，或者业务流中，例如批量生成精美卡片营销内容等等
 
