@@ -44,3 +44,4 @@ bin-release/
 # information for Eclipse / Flash Builder.
 >>>>>>> 7af0fa1a078552e1dc01997bb18193e2d910ecd7
 /pnpm-lock.yaml
+/package-lock.json
