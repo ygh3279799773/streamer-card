@@ -43,3 +43,4 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 >>>>>>> 7af0fa1a078552e1dc01997bb18193e2d910ecd7
+/pnpm-lock.yaml

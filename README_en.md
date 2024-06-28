@@ -1,16 +1,34 @@
-# Flowing Light Card API
+<div align="center">
+<a href="https://fastgpt.in/"><img src="./assets/logo.png" width="120" height="120" alt="fastgpt logo"></a>
 
-Helps you automate the download of attractive cards through ApiPost or any other tool.
+# Streamer Card API
+
+By using the Flowing Light Card API, you can generate exquisite cards and integrate them into your program or business processes, such as batch generating exquisite card marketing content, etc.
 
 <p align="center">
   <a href="./README_en.md">English</a> |
   <a href="./README.md">简体中文</a>
 </p>
 
+
+## 🏠Video Tutorial
+
+The .video files listed in the directory are demonstrations.
+
+<a href='./tudemo_video.mp4' >Tutorial Demonstration</a>
+
+
+
 ## 🛸 Online Usage
 
 - International Version: https://www.streamertextcard.com/en
 - Domestic Version: https://fireflycard.shushiai.com/zh
+
+| ![image-20240628123650052](./assets/image-20240628123650052.png) | ![image-20240628123820134](./assets/image-20240628123820134.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20240628123715055](./assets/image-20240628123715055.png) | ![image-20240628123741010](./assets/image-20240628123741010.png) |
+
+
 
 
 
@@ -148,3 +166,11 @@ node example1.js
 ### Response Example
 
 The response will be a binary image directly.
+
+
+
+## If you are interested in us：
+
+Twitter：@huangzh65903362
+
+Jike：https://web.okjike.com/u/ec41d7d5-407d-4395-ac8a-bd0f04fb202c
