@@ -1,5 +1,6 @@
 <div align="center">
 <a href="https://fastgpt.in/"><img src="./assets/logo.png" width="120" height="120" alt="fastgpt logo"></a>
+</div>
 
 # Streamer Card API
 
@@ -10,8 +11,7 @@ By using the Flowing Light Card API, you can generate exquisite cards and integr
   <a href="./README.md">简体中文</a>
 </p>
 
-
-## 🏠Video Tutorial
+<h2>🧩Video Tutorial</h2>
 
 The .video files listed in the directory are demonstrations.
 
