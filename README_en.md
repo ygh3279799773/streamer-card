@@ -1,5 +1,6 @@
 <div align="center">
 <a href="https://fastgpt.in/"><img src="./assets/logo.png" width="120" height="120" alt="fastgpt logo"></a>
+</div>
 
 # Streamer Card API
 
@@ -10,8 +11,7 @@ By using the Flowing Light Card API, you can generate exquisite cards and integr
   <a href="./README.md">简体中文</a>
 </p>
 
-
-## 🏠Video Tutorial
+<h2>🧩Video Tutorial</h2>
 
 The .video files listed in the directory are demonstrations.
 
@@ -143,23 +143,23 @@ node example1.js
 
 ```JSON
 {
-    "temp": "tempB",
-    "color": "dark-color-2",
-    "icon": "https://img0.baidu.com/... (icon URL)",
-    "title": "👋 hi hello",
-    "date": "2024/6/24 14:41",
-    "content": "This is a beautiful card tool that can make your information stand out on social media in an instant. 💡 You can try typing text here, **supports Markdown syntax**, and it takes effect in real time.",
-    "foreword": "Text Card Tool",
-    "author": "It's the Demon King's",
-    "textcount": "Word Count",
-    "qrcodetitle": "Flowing Light Card",
-    "qrcodetext": "Scan QR Code",
-    "qrcode": "https://fireflycard.shushiai.com/",
-    "watermark": "Firefly Card",
-    "switchConfig": {
-        "showIcon": "false",
-        "showForeword": "false"
-    }
+  "temp": "tempB",
+  "color": "dark-color-2",
+  "icon": "https://img0.baidu.com/... (icon URL)",
+  "title": "👋 hi hello",
+  "date": "2024/6/24 14:41",
+  "content": "This is a beautiful card tool that can make your information stand out on social media in an instant. 💡 You can try typing text here, **supports Markdown syntax**, and it takes effect in real time.",
+  "foreword": "Text Card Tool",
+  "author": "It's the Demon King's",
+  "textcount": "Word Count",
+  "qrcodetitle": "Flowing Light Card",
+  "qrcodetext": "Scan QR Code",
+  "qrcode": "https://fireflycard.shushiai.com/",
+  "watermark": "Firefly Card",
+  "switchConfig": {
+    "showIcon": "false",
+    "showForeword": "false"
+  }
 }
 ```
 
