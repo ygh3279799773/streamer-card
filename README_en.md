@@ -11,7 +11,7 @@ By using the Flowing Light Card API, you can generate exquisite cards and integr
 </p>
 
 
-## ☺️ Video Tutorial
+## 🏠Video Tutorial
 
 The .video files listed in the directory are demonstrations.
 

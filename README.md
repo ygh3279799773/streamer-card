@@ -10,7 +10,7 @@
   <a href="./README_en.md">English</a> |
   <a href="./README.md">简体中文</a>
 </p>
-##  ☺️视频教程
+## 🧩视频教程
 
 在根据目录下的 .video 后缀就是演示了
 
