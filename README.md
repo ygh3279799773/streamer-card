@@ -1,18 +1,30 @@
-# 流光卡片API
+<div align="center">
+<a href="https://fastgpt.in/"><img src="./assets/logo.png" width="120" height="120" alt="fastgpt logo"></a>
 
-帮助你可以通过ApiPost或其他任意工具进行自动化下载好看的卡片
+## 流光卡片 API
+
+通过流光卡片 API 你可以通过使用将精美卡片生成对接到您的程序，或者业务流中，例如批量生成精美卡片营销内容等等
 
 <p align="center">
   <a href="./README_en.md">English</a> |
   <a href="./README.md">简体中文</a>
 </p>
+##  ☺️视频教程
 
-<video src="./video.mp4" controls></video>
+在根据目录下的 .video 后缀就是演示了
+
+<a href='./tudemo_video.mp4' >教程演示</a> 
+
+
 
 ## 🛸 在线使用
 
 - 海外版：https://www.streamertextcard.com/en
 - 国内版：https://fireflycard.shushiai.com/zh
+
+| ![image-20240628123650052](./assets/image-20240628123650052.png) | ![image-20240628123820134](./assets/image-20240628123820134.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20240628123715055](./assets/image-20240628123715055.png) | ![image-20240628123741010](./assets/image-20240628123741010.png) |
 
 
 
@@ -31,8 +43,6 @@ yarn install
 #运行示例：
 node example1.js 
 ```
-
-
 
 ##### 接口说明 POST /saveImg
 
@@ -54,7 +64,7 @@ node example1.js
 | `watermark`   | String | 水印                                    |
 | switchConfig  | Object | 展示控制                                |
 
-##### switchConfig参数说明
+##### switchConfig 参数说明
 
 | 字段名        | 类型    | 描述     |
 | ------------- | ------- | -------- |
@@ -150,4 +160,14 @@ node example1.js
 ##### 响应示例
 
 > 会直接响应二进制图片
+
+
+
+## 如果你对我们感兴趣
+
+推特：@huangzh65903362
+
+即刻：https://web.okjike.com/u/ec41d7d5-407d-4395-ac8a-bd0f04fb202c
+
+<img src="./assets/hzy_wx.jpg" alt="hzy_wx" style="zoom: 33%;" />
 
