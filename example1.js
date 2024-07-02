@@ -32,7 +32,7 @@ function waitForTransition(page, selector) {
 
 function delayMission() {
     return new Promise(resolve => {
-        setTimeout(resolve, 500);
+        setTimeout(resolve, 1000);
     })
 }
 
@@ -46,7 +46,9 @@ app.post('/saveImg', [jsonParser, urlEncodeParser], async (req, res) => {
             let idleArr = [];
             let blackArr = ['icon', 'switchConfig'];
             for (const key in body) {
-                if (!blackArr.includes(key)) {
+                if (key === 'content') {
+                    idleArr.push(`${key}=${encodeURIComponent(body[key])}`);
+                } else if (!blackArr.includes(key)) {
                     idleArr.push(`${key}=${body[key]}`);
                 } else if (key === 'switchConfig') {
                     idleArr.push(`${key}=${JSON.stringify(body[key])}`);
@@ -60,6 +62,7 @@ app.post('/saveImg', [jsonParser, urlEncodeParser], async (req, res) => {
         const page = await browser.newPage();
         // const url = `http://192.168.113.72:3000/zh${params}`;
         await page.goto(url + params);
+        console.log(url + params)
         await page.setViewport({ width: 1920, height: 1080 });
         // 项目中存在一些异步加载的情况，需要等待加载完成
         await delayMission()
