@@ -38,7 +38,10 @@ The .video files listed in the directory are demonstrations.
 
 - Node + Express + Puppeteer
 
-**Note:** The Node version must be greater than 18.
+##### Note:
+
+- The node version must be older than 18
+- If the user is from outside mainland China or has enabled a VPN, please switch the server to the overseas version according to the prompts in the code to avoid request timeouts.
 
 ### Usage Instructions
 
