@@ -1,71 +1,98 @@
 const express = require('express');
 const puppeteer = require('puppeteer');
+const MarkdownIt = require('markdown-it');
+const md = new MarkdownIt({ breaks: true });
 
-// 请求端口
-let port = 3002;
-// 请求基础地址（末尾必须携带 / ）
-// 如果你正在使用vpn，建议将服务器替换为：https://www.streamertextcard.com/en
+const port = 3003;
 const url = 'https://fireflycard.shushiai.com/';
-// 清晰度设置（值越大越清晰，同时也意味着图片尺寸越大）
-const scale = 3
+const scale = 2;
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-const jsonParser = express.json();
-const urlEncodeParser = express.urlencoded({ extended: false });
+let browser;
 
-function delayMission() {
-    return new Promise(resolve => {
-        setTimeout(resolve, 1000);
-    })
+async function launchBrowser() {
+    if (!browser) {
+        browser = await puppeteer.launch({
+            args: [
+                '--disable-dev-shm-usage',
+                '--disable-setuid-sandbox',
+                '--no-first-run',
+                '--no-sandbox',
+                '--no-zygote'
+            ],
+            headless: true
+        });
+    }
+    return browser;
 }
 
-app.post('/saveImg', [jsonParser, urlEncodeParser], async (req, res) => {
+async function closeBrowser() {
+    if (browser) {
+        await browser.close();
+        browser = null;
+    }
+}
+
+app.post('/saveImg', async (req, res) => {
+    let page;
     try {
         const body = req.body;
-        let iconSrc = body?.icon;
-        let params = '';
-        if (body) {
-            params += '?';
-            let idleArr = [];
-            let blackArr = ['icon', 'switchConfig'];
-            for (const key in body) {
-                if (key === 'content') {
-                    idleArr.push(`${key}=${encodeURIComponent(body[key])}`);
-                } else if (!blackArr.includes(key)) {
-                    idleArr.push(`${key}=${body[key]}`);
-                } else if (key === 'switchConfig') {
-                    idleArr.push(`${key}=${JSON.stringify(body[key])}`);
-                }
+        let iconSrc = body.icon;
+        let params = new URLSearchParams({ isAPI: true });
+        let blackArr = ['icon', 'switchConfig', 'content'];
+
+        for (const key in body) {
+            if (!blackArr.includes(key)) {
+                params.append(key, body[key]);
+            } else if (key === 'switchConfig') {
+                params.append(key, JSON.stringify(body[key]));
             }
-            params += idleArr.join('&');
         }
-        const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+
+        await launchBrowser();
+        page = await browser.newPage();
+
+        await page.setRequestInterception(true);
+        page.on('request', req => {
+            if (req.resourceType() === 'font') {
+                req.abort();
+            } else {
+                req.continue();
+            }
         });
-        const page = await browser.newPage();
-        await page.goto(url + params);
-        await page.setViewport({ width: 1920, height: 1080 });
-        // 项目中存在一些异步加载的情况，需要等待加载完成
-        await delayMission()
+
+        const viewPortConfig = { width: 1920, height: 1080 };
+        await page.setViewport(viewPortConfig);
+        await page.goto(url + '?' + params.toString(), {
+            timeout: 60000,
+            waitUntil: ['load', 'domcontentloaded', 'networkidle0', 'networkidle2']
+        });
+
         const cardElement = await page.$(`#${body.temp || 'tempA'}`);
         if (!cardElement) {
-            await browser.close();
-            return res.status(500).send('请求的卡片不存在');
+            throw new Error('Requested card does not exist');
         }
+
+        if (body.content) {
+            const html = md.render(body.content).replace(/\n$/, '');
+            await page.evaluate(html => {
+                const contentEl = document.querySelector('[name="showContent"]');
+                if (contentEl) contentEl.innerHTML = html;
+            }, html);
+        }
+
         if (iconSrc && iconSrc.startsWith('http')) {
-            await page.evaluate(async (imgSrc) => {
+            await page.evaluate(async imgSrc => {
                 const loadImage = () => {
-                    return new Promise((resolve) => {
+                    return new Promise(resolve => {
                         const imageElement = document.querySelector('#icon');
                         if (imageElement) {
                             imageElement.src = imgSrc;
-                            imageElement.addEventListener('load', () => {
-                                resolve(true);
-                            });
-                            imageElement.addEventListener('error', () => {
-                                resolve(true);
-                            });
+                            imageElement.addEventListener('load', () => resolve(true));
+                            imageElement.addEventListener('error', () => resolve(true));
                         } else {
                             resolve(false);
                         }
@@ -74,27 +101,38 @@ app.post('/saveImg', [jsonParser, urlEncodeParser], async (req, res) => {
                 return loadImage();
             }, iconSrc);
         }
+
         const boundingBox = await cardElement.boundingBox();
-        let buffer = null;
-        if (boundingBox) {
-            buffer = await page.screenshot({
-                type: 'png',
-                clip: {
-                    scale,
-                    x: boundingBox.x,
-                    y: boundingBox.y,
-                    width: boundingBox.width,
-                    height: boundingBox.height,
-                }
-            });
+        if (boundingBox.height > viewPortConfig.height) {
+            await page.setViewport({ width: 1920, height: Math.ceil(boundingBox.height) });
         }
-        await browser.close();
+
+        const buffer = await page.screenshot({
+            type: 'png',
+            clip: {
+                x: boundingBox.x,
+                y: boundingBox.y + 0.5,
+                width: boundingBox.width,
+                height: boundingBox.height,
+                scale: scale
+            }
+        });
+
         res.setHeader('Content-Type', 'image/png');
         res.status(200).send(buffer);
     } catch (error) {
-        console.log(error);
+        console.error('Error processing request:', error);
         res.status(500).send(error.toString());
+    } finally {
+        if (page) {
+            await page.close();
+        }
     }
+});
+
+process.on('SIGINT', async () => {
+    await closeBrowser();
+    process.exit();
 });
 
 app.listen(port, () => {
