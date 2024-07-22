@@ -12,18 +12,12 @@ let port = 3003;
 const url = 'https://fireflycard.shushiai.com/';
 // const url = 'http://192.168.113.75:3000/';
 // 清晰度设置（值越大越清晰，同时也意味着图片尺寸越大）
-const scale = 3
+const scale = 2
 
 const app = express();
 
 const jsonParser = express.json();
 const urlEncodeParser = express.urlencoded({extended: false});
-
-function delayMission(timer) {
-    return new Promise(resolve => {
-        setTimeout(resolve, timer);
-    })
-}
 
 let browser = null
 let page = null
@@ -89,7 +83,8 @@ app.post('/saveImg', [jsonParser, urlEncodeParser], async (req, res) => {
                 '--disable-setuid-sandbox',
                 '--no-first-run',
                 '--no-sandbox',
-                '--no-zygote'
+                '--no-zygote',
+                '–single-process'
             ],
             headless: true
         });

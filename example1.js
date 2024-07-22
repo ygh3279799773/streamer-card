@@ -19,33 +19,8 @@ const app = express();
 const jsonParser = express.json();
 const urlEncodeParser = express.urlencoded({extended: false});
 
-function delayMission(timer) {
-    return new Promise(resolve => {
-        setTimeout(resolve, timer);
-    })
-}
-
 let browser = null
 let page = null
-
-let browserWSEndpoint = null
-async function getBrowserWsEndpoint() {
-    if (!browser) {
-        const baseBrowser = await puppeteer.launch({
-            // args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            args: [
-                '--disable-dev-shm-usage',
-                '--disable-setuid-sandbox',
-                '--no-first-run',
-                '--no-sandbox',
-                '--no-zygote'
-            ],
-            headless: true
-        });
-        browserWSEndpoint = baseBrowser.wsEndpoint();
-    }
-    return browserWSEndpoint
-}
 
 async function closeHandler() {
     try {

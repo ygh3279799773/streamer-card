@@ -39,7 +39,8 @@ bin-release/
 *.ipa
 *.apk
 
-example2.js
+/example2.js
+
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
