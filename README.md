@@ -53,21 +53,25 @@ node example1.js
 
 ##### 参数说明
 
-| 字段名        | 类型   | 描述                                    |
-| ------------- | ------ | --------------------------------------- |
-| temp          | String | 模板选择，目前仅有：tempA、tempB、tempC |
-| `color`       | String | 颜色，请看下方颜色配置                  |
-| `icon`        | String | 图标                                    |
-| `title`       | String | 卡片 title                              |
-| `date`        | String | 时间显示                                |
-| `content`     | String | 卡片正文                                |
-| `foreword`    | String | 前言                                    |
-| `author`      | String | 作者                                    |
-| `qrcodetitle` | String | 二维码头部                              |
-| `qrcodetext`  | String | 二维码描述文字                          |
-| `qrcode`      | String | 你的二维码链接                          |
-| `watermark`   | String | 水印                                    |
-| switchConfig  | Object | 展示控制                                |
+| 字段名        | 类型   | 描述                                             |
+| ------------- | ------ | ------------------------------------------------ |
+| temp          | String | 模板选择，目前仅有：tempA、tempB、tempC          |
+| `color`       | String | 颜色，请看下方颜色配置                           |
+| `icon`        | String | 图标                                             |
+| `title`       | String | 卡片 title                                       |
+| `date`        | String | 时间显示                                         |
+| `content`     | String | 卡片正文                                         |
+| `foreword`    | String | 前言                                             |
+| `author`      | String | 作者                                             |
+| `qrcodetitle` | String | 二维码头部                                       |
+| `qrcodetext`  | String | 二维码描述文字                                   |
+| `qrcode`      | String | 你的二维码链接                                   |
+| qrcodeImg     | String | 你的二维码图片（优先级比`qrcode`高，选其一即可） |
+| `watermark`   | String | 水印                                             |
+| switchConfig  | Object | 展示控制                                         |
+| width         | String | 宽度                                             |
+| padding       | String | 内边距                                           |
+| fontScale     | String | 文字大小比例（例如传入1.2或者1.4等）             |
 
 ##### switchConfig 参数说明
 
