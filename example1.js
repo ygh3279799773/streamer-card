@@ -7,7 +7,7 @@ const md = new MarkdownIt({ breaks: true }); // 初始化MarkdownIt实例，配�
 // 配置常量
 const port = 3003; // 服务器监听的端口号
 const url = 'https://fireflycard.shushiai.com/'; // 要访问的目标URL
-const scale = 2; // 截图的缩放比例
+const scale = 2; // 截图的缩放比例，图片不清晰就加大这个参数
 const maxRetries = 3; // 处理请求的最大重试次数
 const maxPages = 5; // 浏览器中允许同时打开的最大页面数
 
