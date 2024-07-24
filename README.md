@@ -10,15 +10,6 @@
   <a href="./README_en.md">English</a> |
   <a href="./README.md">简体中文</a>
 </p>
-
-<h2>🧩视频教程</h2>
-
-在根据目录下的 .video 后缀就是演示了
-
-<a href='./tudemo_video.mp4' >教程演示</a>
-
-
-
 ## 🛸 在线使用
 
 - 海外版：https://www.streamertextcard.com/en
@@ -30,9 +21,26 @@
 
 
 
-## 👨‍💻 使用
+## API 实现原理
 
-项目技术栈：Node + Express + Puppeteer
+项目技术栈：NodeJs + Express + Puppeteer
+
+话说回来，Express 和 puppeteer 又是什么东西？
+
+- Express：用于创建Web服务器和处理HTTP请求
+- Puppeteer：用于控制无头浏览器（如Chrome）进行网页的自动化操作。**（重点是这个技术栈）**
+
+一句话说明，这个 API 的原理就是通过类似爬虫，自动化的库，打开 Puppeteer 然后修改卡片上的文本，图像等信息，最后对卡片进行截图，响应给前端，你也可以通过其他相似的技术栈来实现这个功能，比如：
+
+- Python + Flask/Django + Selenium/Playwright
+- Java + Spring Boot + Selenium
+- .....
+
+总之你可以使用你喜欢的语言重写这个 API 也是完全没问题的，毕竟原理就是如此简单，找一个库，可以打开浏览器，然后截图指定元素，最后响应前端。
+
+不过在本开源项目中还针对并发场景做了一些优化，比如增加了重试机制，引入了 puppeteer-cluster 来管理浏览器实例
+
+## 👨‍💻 使用
 
 ##### 注意：
 
@@ -53,34 +61,38 @@ node example1.js
 
 ##### 参数说明
 
-| 字段名        | 类型   | 描述                                    |
-| ------------- | ------ | --------------------------------------- |
-| temp          | String | 模板选择，目前仅有：tempA、tempB、tempC |
-| `color`       | String | 颜色，请看下方颜色配置                  |
-| `icon`        | String | 图标                                    |
-| `title`       | String | 卡片 title                              |
-| `date`        | String | 时间显示                                |
-| `content`     | String | 卡片正文                                |
-| `foreword`    | String | 前言                                    |
-| `author`      | String | 作者                                    |
-| `qrcodetitle` | String | 二维码头部                              |
-| `qrcodetext`  | String | 二维码描述文字                          |
-| `qrcode`      | String | 你的二维码链接                          |
-| `watermark`   | String | 水印                                    |
-| switchConfig  | Object | 展示控制                                |
+| 字段名         | 类型   | 描述                                             |
+| -------------- | ------ | ------------------------------------------------ |
+| `temp`         | String | 模板选择，目前仅有：tempA、tempB、tempC          |
+| `color`        | String | 颜色，请看下方颜色配置                           |
+| `icon`         | String | 图标                                             |
+| `title`        | String | 卡片 title                                       |
+| `date`         | String | 时间显示                                         |
+| `content`      | String | 卡片正文                                         |
+| `foreword`     | String | 前言                                             |
+| `author`       | String | 作者                                             |
+| `qrcodetitle`  | String | 二维码头部                                       |
+| `qrcodetext`   | String | 二维码描述文字                                   |
+| `qrcode`       | String | 你的二维码链接                                   |
+| `qrcodeImg`    | String | 你的二维码图片（优先级比`qrcode`高，选其一即可） |
+| `watermark`    | String | 水印                                             |
+| `switchConfig` | Object | 展示控制                                         |
+| `width`        | String | 宽度                                             |
+| `padding`      | String | 内边距                                           |
+| `fontScale`    | String | 文字大小比例（例如传入1.2或者1.4等）             |
 
 ##### switchConfig 参数说明
 
-| 字段名        | 类型    | 描述     |
-| ------------- | ------- | -------- |
-| showIcon      | Boolean | 图标显示 |
-| showDate      | Boolean | 日期显示 |
-| showTitle     | Boolean | 标题显示 |
-| showContent   | Boolean | 文本显示 |
-| showAuthor    | Boolean | 作者显示 |
-| showTextCount | Boolean | 文本计数 |
-| showQRCode    | Boolean | 二维码   |
-| showForeword  | Boolean | 前言     |
+| 字段名          | 类型    | 描述     |
+| --------------- | ------- | -------- |
+| `showIcon`      | Boolean | 图标显示 |
+| `showDate`      | Boolean | 日期显示 |
+| `showTitle`     | Boolean | 标题显示 |
+| `showContent`   | Boolean | 文本显示 |
+| `showAuthor`    | Boolean | 作者显示 |
+| `showTextCount` | Boolean | 文本计数 |
+| `showQRCode`    | Boolean | 二维码   |
+| `showForeword`  | Boolean | 前言     |
 
 ##### color参数说明
 
