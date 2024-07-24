@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "lru-cache": "^11.0.0",
     "markdown-it": "^14.1.0",
     "puppeteer": "^22.12.1",
     "puppeteer-cluster": "^0.24.0"
