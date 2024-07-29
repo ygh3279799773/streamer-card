@@ -10,7 +10,7 @@
   <a href="./README_en.md">English</a> |
   <a href="./README.md">简体中文</a>
 </p>
-## 🛸 在线使用
+## 1、🛸 在线使用
 
 - 海外版：https://www.streamertextcard.com/en
 - 国内版：https://fireflycard.shushiai.com/zh
@@ -21,7 +21,7 @@
 
 
 
-## API 实现原理
+## 2、API 实现原理
 
 项目技术栈：NodeJs + Express + Puppeteer
 
@@ -36,11 +36,31 @@
 - Java + Spring Boot + Selenium
 - .....
 
-总之你可以使用你喜欢的语言重写这个 API 也是完全没问题的，毕竟原理就是如此简单，找一个库，可以打开浏览器，然后截图指定元素，最后响应前端。
+总之你可以使用你喜欢的语言重写这个 API 也是完全没问题的，毕竟原理就是如此简单，**找一个库，可以打开浏览器，然后截图指定元素，最后响应前端。**
 
 不过在本开源项目中还针对并发场景做了一些优化，比如增加了重试机制，引入了 puppeteer-cluster 来管理浏览器实例
 
-## 👨‍💻 使用
+## 3、常见问题
+
+#### 3.1、部署 Linux 生成图片中文乱码
+
+原因是因为一般 Linux 默认字体不支持中文，需要自己安装中文字体，比如你是 centOS，你可以尝试执行以下命令解决：
+
+```sh
+sudo yum install wqy-microhei-fonts.noarch -y
+sudo yum install wqy-unibit-fonts.noarch -y
+sudo yum install wqy-zenhei-fonts.noarch -y
+```
+
+或者自己上网搜一下中文字体即可
+
+<img src="./assets/image-20240729143113993.png" alt="image-20240729143113993" style="zoom:50%;" />
+
+
+
+
+
+## 4、👨‍💻 使用
 
 ##### 注意：
 
@@ -77,22 +97,22 @@ node example1.js
 | `qrcodeImg`    | String | 你的二维码图片（优先级比`qrcode`高，选其一即可） |
 | `watermark`    | String | 水印                                             |
 | `switchConfig` | Object | 展示控制                                         |
-| `width`        | String | 宽度                                             |
+| `width`        | String | 宽度，默认情况下是 340px                         |
 | `padding`      | String | 内边距                                           |
 | `fontScale`    | String | 文字大小比例（例如传入1.2或者1.4等）             |
 
 ##### switchConfig 参数说明
 
-| 字段名          | 类型    | 描述     |
-| --------------- | ------- | -------- |
-| `showIcon`      | Boolean | 图标显示 |
-| `showDate`      | Boolean | 日期显示 |
-| `showTitle`     | Boolean | 标题显示 |
-| `showContent`   | Boolean | 文本显示 |
-| `showAuthor`    | Boolean | 作者显示 |
-| `showTextCount` | Boolean | 文本计数 |
-| `showQRCode`    | Boolean | 二维码   |
-| `showForeword`  | Boolean | 前言     |
+| 字段名          | 类型                         | 描述     |
+| --------------- | ---------------------------- | -------- |
+| `showIcon`      | 字符串，可选："true","false" | 图标显示 |
+| `showDate`      | 字符串，可选："true","false" | 日期显示 |
+| `showTitle`     | 字符串，可选："true","false" | 标题显示 |
+| `showContent`   | 字符串，可选："true","false" | 文本显示 |
+| `showAuthor`    | 字符串，可选："true","false" | 作者显示 |
+| `showTextCount` | 字符串，可选："true","false" | 文本计数 |
+| `showQRCode`    | 字符串，可选："true","false" | 二维码   |
+| `showForeword`  | 字符串，可选："true","false" | 前言     |
 
 ##### color参数说明
 
@@ -180,11 +200,33 @@ node example1.js
 
 
 
-## 如果你对我们感兴趣
+## 5、如果你对我们感兴趣
 
 推特：@huangzh65903362
 
 即刻：https://web.okjike.com/u/ec41d7d5-407d-4395-ac8a-bd0f04fb202c
 
 <img src="./assets/hzy_wx.jpg" alt="hzy_wx" style="zoom: 33%;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
