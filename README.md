@@ -86,7 +86,7 @@ docker run -d --name streamer-card -p 3003:3003 --restart always ygh3279799773/s
 #### 停止
 
 ```bash
-docker stop ygh3279799773/streamer-card:latest
+docker stop streamer-card
 ```
 
 ##### 使用方式
