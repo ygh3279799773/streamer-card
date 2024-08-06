@@ -80,7 +80,7 @@ docker build -t ygh3279799773/streamer-card:latest .
 #### 运行
 
 ```bash
-docker run -d --name streamer-card -p 3000:3000 --restart always ygh3279799773/streamer-card:latest
+docker run -d --name streamer-card -p 3003:3003 --restart always ygh3279799773/streamer-card:latest
 ```
 
 #### 停止
