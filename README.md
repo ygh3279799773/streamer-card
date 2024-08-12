@@ -67,6 +67,28 @@ sudo yum install wqy-zenhei-fonts.noarch -y
 - node版本必须大于18
 - 如果非中国大陆用户或开启了VPN，请根据代码中的提示将服务器切换至海外版避免请求超时
 
+### Docker执行
+
+#### docker cli
+
+#### 编译
+
+```bash
+docker build -t ygh3279799773/streamer-card:latest .
+```
+
+#### 运行
+
+```bash
+docker run -d --name streamer-card -p 3003:3003 --restart always ygh3279799773/streamer-card:latest
+```
+
+#### 停止
+
+```bash
+docker stop streamer-card
+```
+
 ##### 使用方式
 
 ```bash
