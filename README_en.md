@@ -53,7 +53,7 @@ However, in this open-source project, we've made some optimizations for concurre
 yarn install
 
 # Run example:
-node example1.js 
+node index.ts 
 ```
 
 ##### API Endpoint: POST /saveImg

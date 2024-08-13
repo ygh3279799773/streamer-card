@@ -96,32 +96,37 @@ docker stop streamer-card
 yarn install
 
 #运行示例：
-node example1.js 
+node index.ts 
 ```
 
 ##### 接口说明 POST /saveImg
 
 ##### 参数说明
 
-| 字段名         | 类型   | 描述                                             |
-| -------------- | ------ | ------------------------------------------------ |
-| `temp`         | String | 模板选择，目前仅有：tempA、tempB、tempC          |
-| `color`        | String | 颜色，请看下方颜色配置                           |
-| `icon`         | String | 图标                                             |
-| `title`        | String | 卡片 title                                       |
-| `date`         | String | 时间显示                                         |
-| `content`      | String | 卡片正文                                         |
-| `foreword`     | String | 前言                                             |
-| `author`       | String | 作者                                             |
-| `qrcodetitle`  | String | 二维码头部                                       |
-| `qrcodetext`   | String | 二维码描述文字                                   |
-| `qrcode`       | String | 你的二维码链接                                   |
-| `qrcodeImg`    | String | 你的二维码图片（优先级比`qrcode`高，选其一即可） |
-| `watermark`    | String | 水印                                             |
-| `switchConfig` | Object | 展示控制                                         |
-| `width`        | String | 宽度，默认情况下是 340px                         |
-| `padding`      | String | 内边距                                           |
-| `fontScale`    | String | 文字大小比例（例如传入1.2或者1.4等）             |
+| 字段名              | 类型      | 描述                                    |
+|------------------|---------|---------------------------------------|
+| `temp`           | String  | 模板选择，目前仅有：tempA、tempB、tempC           |
+| `color`          | String  | 颜色，请看下方颜色配置                           |
+| `icon`           | String  | 图标                                    |
+| `title`          | String  | 卡片 title                              |
+| `date`           | String  | 时间显示                                  |
+| `content`        | String  | 卡片正文                                  |
+| `foreword`       | String  | 前言                                    |
+| `author`         | String  | 作者                                    |
+| `qrcodetitle`    | String  | 二维码头部                                 |
+| `qrcodetext`     | String  | 二维码描述文字                               |
+| `qrcode`         | String  | 你的二维码链接                               |
+| `qrcodeImg`      | String  | 你的二维码图片（优先级比`qrcode`高，选其一即可）          |
+| `watermark`      | String  | 水印                                    |
+| `switchConfig`   | Object  | 展示控制                                  |
+| `width`          | String  | 宽度，默认情况下是 340px                       |
+| `padding`        | String  | 内边距                                   |
+| `fontScale`      | String  | 文字大小比例（例如传入1.2或者1.4等）        |
+| `useLoadingFont` | Boolean | 是否加载模板默认字体，默认情况下 api 为了更快的请求速度是不加载字体的 |
+| `useFont`        | String  | 指定字体类型，例如：朱雀仿宋，汇文明朝体，抖音美好体      |
+| `imgScale`       | String  | 图片清晰度，默认为 2，数值越大越清晰，同时下载时间也更长   |
+| `isHtml`         | String  | 是否使用 html 解析，默认为 false，使用 md 语法解析     |
+
 
 ##### switchConfig 参数说明
 
