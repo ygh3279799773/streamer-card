@@ -121,12 +121,26 @@ node index.ts
 | `switchConfig`   | Object  | 展示控制                                  |
 | `width`          | String  | 宽度，默认情况下是 340px                       |
 | `padding`        | String  | 内边距                                   |
-| `fontScale`      | String  | 文字大小比例（例如传入1.2或者1.4等）        |
+| `fontScale`      | String  | 文字大小比例（例如传入1.2或者1.4等）                 |
 | `useLoadingFont` | Boolean | 是否加载模板默认字体，默认情况下 api 为了更快的请求速度是不加载字体的 |
-| `useFont`        | String  | 指定字体类型，例如：朱雀仿宋，汇文明朝体，抖音美好体      |
-| `imgScale`       | String  | 图片清晰度，默认为 2，数值越大越清晰，同时下载时间也更长   |
+| `useFont`        | String  | 指定字体类型，字体类型，往下翻                       |
+| `imgScale`       | String  | 图片清晰度，默认为 2，数值越大越清晰，同时下载时间也更长         |
 | `isHtml`         | String  | 是否使用 html 解析，默认为 false，使用 md 语法解析     |
 
+#### useFont 字体类型
+
+| 字体名称          | 参数value                  |
+|---------------|--------------------------|
+| 默认            | Source_Han_Sans_SC       |
+| 思源宋体-SemiBold | SourceHanSerifCN_SemiBold |
+| 思源宋体-Bold     | SourceHanSerifCN_Bold    |
+| 仓耳渔阳体W03      | CangErYuYangTiW03        |
+| 汇文明朝体         | Huiwen_mingchao          |
+| 朱雀仿宋          | ZhuqueFangsong           |
+| 小米-Light      | MiSans-Light             |
+| 小米-Normal     | MiSans-Thin              |
+| 小米-ExtraLight | MiSans-ExtraLight        |
+| 抖音美好体         | DouyinSansBold           |
 
 ##### switchConfig 参数说明
 
