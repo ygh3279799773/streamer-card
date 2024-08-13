@@ -46,3 +46,4 @@ example2.js
 # information for Eclipse / Flash Builder.
 /pnpm-lock.yaml
 /package-lock.json
+/yarn.lock
