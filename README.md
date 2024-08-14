@@ -96,7 +96,7 @@ docker stop streamer-card
 yarn install
 
 #运行示例：
-node index.ts 
+ts-node src/index.ts
 ```
 
 ##### 接口说明 POST /saveImg

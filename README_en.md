@@ -85,7 +85,7 @@ docker stop streamer-card
 yarn install
 
 # Run example:
-node index.ts 
+ts-node src/index.ts
 ```
 
 ##### API Description POST /saveImg
@@ -110,7 +110,7 @@ node index.ts
 | `switchConfig`   | Object  | Display control                                              |
 | `width`          | String  | Width, default is 340px                                      |
 | `padding`        | String  | Inner padding                                                |
-| `fontScale`      | String  | Text size ratio (e.g., 1.2 or 1.4)                           |
+| `fontScale`      | String  | Text size ratio (e.g., 1.2 or 1.4)                           ****|****
 | `useLoadingFont` | Boolean | Whether to load the template's default font, by default the API doesn't load fonts for faster requests |
 | `useFont`        | String  | Specify font type, see font types below                      |
 | `imgScale`       | String  | Image clarity, default is 2, higher value means clearer but longer download time |
