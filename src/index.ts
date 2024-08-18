@@ -118,9 +118,10 @@ async function processRequest(req) {
             await page.waitForFunction('document.fonts.status === "loaded"');
         }
 
-        await delay(2000)
+        await delay(1000)
 
-        const cardElement = await page.$(`#${body.temp || 'tempA'}`); // 查找卡片元素
+        // const cardElement = await page.$(`#${body.temp || 'tempA'}`); // 查找卡片元素
+        const cardElement = await page.$(`.${body.temp || 'tempA'}`);
         if (!cardElement) {
             throw new Error('请求的卡片不存在'); // 抛出错误
         }
@@ -128,7 +129,7 @@ async function processRequest(req) {
 
         let translate = body.translate;
         if (translate) {
-            await page.evaluate(translate => {
+            await page.evaluate((translate: string) => {
                 // 如果有英文翻译插入英文翻译
                 const translateEl = document.querySelector('[name="showTranslation"]');
                 if (translateEl) translateEl.innerHTML = translate;
