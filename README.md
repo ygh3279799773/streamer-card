@@ -97,6 +97,8 @@ yarn install
 
 #运行示例：
 ts-node src/index.ts
+or
+node src/index.js
 ```
 
 ##### 接口说明 POST /saveImg
@@ -119,13 +121,14 @@ ts-node src/index.ts
 | `qrcodeImg`      | String  | 你的二维码图片（优先级比`qrcode`高，选其一即可）          |
 | `watermark`      | String  | 水印                                    |
 | `switchConfig`   | Object  | 展示控制                                  |
-| `width`          | String  | 宽度，默认情况下是 340px                       |
+| `width`          | String  | 宽度，最小 300                             |
+| `height`         | String  | 高度                                    |
 | `padding`        | String  | 内边距                                   |
 | `fontScale`      | String  | 文字大小比例（例如传入1.2或者1.4等）                 |
 | `useLoadingFont` | Boolean | 是否加载模板默认字体，默认情况下 api 为了更快的请求速度是不加载字体的 |
 | `useFont`        | String  | 指定字体类型，字体类型，往下翻                       |
 | `imgScale`       | String  | 图片清晰度，默认为 2，数值越大越清晰，同时下载时间也更长         |
-| `isHtml`         | String  | 是否使用 html 解析，默认为 false，使用 md 语法解析     |
+| `isContentHtml`  | String  | 是否使用 html 解析，默认为 false，使用 md 语法解析     |
 
 #### useFont 字体类型
 

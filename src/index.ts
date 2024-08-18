@@ -139,7 +139,7 @@ async function processRequest(req) {
         let isContentHtml:boolean = body.isContentHtml;
         if (content) {
             let html = content;
-            if (isContentHtml) {
+            if (!isContentHtml) {
                 content = content.replaceAll(/\n/g, '--br--')
                 html = md.render(content);
                 html = html.replace(/--br--/g, '<br/>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');

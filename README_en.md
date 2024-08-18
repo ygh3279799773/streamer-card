@@ -86,6 +86,8 @@ yarn install
 
 # Run example:
 ts-node src/index.ts
+or
+node src/index.js
 ```
 
 ##### API Description POST /saveImg
@@ -114,7 +116,7 @@ ts-node src/index.ts
 | `useLoadingFont` | Boolean | Whether to load the template's default font, by default the API doesn't load fonts for faster requests |
 | `useFont`        | String  | Specify font type, see font types below                      |
 | `imgScale`       | String  | Image clarity, default is 2, higher value means clearer but longer download time |
-| `isHtml`         | String  | Whether to use HTML parsing, default is false, uses MD syntax parsing |
+| `isContentHtml`         | String  | Whether to use HTML parsing, default is false, uses MD syntax parsing |
 
 #### useFont Font Types
 
