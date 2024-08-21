@@ -4,8 +4,8 @@ const MarkdownIt = require('markdown-it'); // 引入 Markdown-It 库，用于解
 const md = new MarkdownIt({breaks: false}); // 初始化 Markdown-It，并设置换行符解析选项
 const {LRUCache} = require('lru-cache'); // 引入 LRU 缓存库，并注意其导入方式
 const port = 3003; // 设置服务器监听端口
-const url = 'https://fireflycard.shushiai.com/'; // 要访问的目标 URL
-// const url = 'http://localhost:3000/'; // 要访问的目标 URL
+// const url = 'https://fireflycard.shushiai.com/'; // 要访问的目标 URL
+const url = 'http://localhost:3000/'; // 要访问的目标 URL
 const scale = 2; // 设置截图的缩放比例，图片不清晰就加大这个数值
 const maxRetries = 3; // 设置请求重试次数
 const maxConcurrency = 10; // 设置 Puppeteer 集群的最大并发数
@@ -72,7 +72,6 @@ async function processRequest(req) {
 
     console.log('处理请求，内容为:', JSON.stringify(body));
     let iconSrc = body.icon;
-    let qrcodeSrc = body.qrcodeImg;
     // 是否使用字体
     let useLoadingFont = body.useLoadingFont;
     // let params = new URLSearchParams({isAPI: true}); // 初始化 URL 查询参数
@@ -91,9 +90,8 @@ async function processRequest(req) {
         url: url + '?' + params.toString(), // 拼接 URL 和查询参数
         body,
         iconSrc,
-        qrcodeSrc
     }, async ({page, data}) => {
-        const {url, body, iconSrc, qrcodeSrc} = data;
+        const {url, body, iconSrc} = data;
         await page.setRequestInterception(true); // 设置请求拦截
         page.on('request', req => {
             if (!useLoadingFont && req.resourceType() === 'font') {
@@ -140,7 +138,7 @@ async function processRequest(req) {
         let isContentHtml:boolean = body.isContentHtml;
         if (content) {
             let html = content;
-            if (!isContentHtml) {
+             if (!isContentHtml) {
                 content = content.replaceAll(/\n/g, '--br--')
                 html = md.render(content);
                 html = html.replace(/--br--/g, '<br/>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
@@ -154,41 +152,20 @@ async function processRequest(req) {
         }
 
         if (iconSrc && iconSrc.startsWith('http')) {
-            await page.evaluate(async imgSrc => {
-                const loadImage = () => {
-                    return new Promise(resolve => {
-                        const imageElement: HTMLImageElement = document.querySelector('#icon');
-                        if (imageElement) {
-                            imageElement.src = imgSrc; // 设置图标源
-                            imageElement.addEventListener('load', () => resolve(true));
-                            imageElement.addEventListener('error', () => resolve(true));
-                        } else {
-                            resolve(false);
-                        }
-                    });
-                };
-                return loadImage();
+            await page.evaluate(function(imgSrc) {
+                return new Promise(function(resolve) {
+                    var imageElement:any = document.querySelector('#icon');
+                    console.log("头像", imageElement);
+                    if (imageElement) {
+                        imageElement.src = imgSrc;
+                        imageElement.addEventListener('load', function() { resolve(true); });
+                        imageElement.addEventListener('error', function() { resolve(true); });
+                    } else {
+                        resolve(false);
+                    }
+                });
             }, iconSrc);
             console.log('图标已设置');
-        }
-
-        if (qrcodeSrc && qrcodeSrc.startsWith('http')) {
-            await page.evaluate(async imgSrc => {
-                const loadImage = () => {
-                    return new Promise(resolve => {
-                        const imageElement: HTMLImageElement = document.querySelector('[name="qrcodeImg"]');
-                        if (imageElement) {
-                            imageElement.src = imgSrc; // 设置二维码源
-                            imageElement.addEventListener('load', () => resolve(true));
-                            imageElement.addEventListener('error', () => resolve(true));
-                        } else {
-                            resolve(false);
-                        }
-                    });
-                };
-                return loadImage();
-            }, qrcodeSrc);
-            console.log('二维码已设置');
         }
 
         const boundingBox = await cardElement.boundingBox(); // 获取卡片元素边界框
