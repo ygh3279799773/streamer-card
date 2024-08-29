@@ -10,6 +10,7 @@
   <a href="./README_en.md">English</a> |
   <a href="./README.md">简体中文</a>
 </p>
+
 ## 1、🛸 在线使用
 
 - 海外版：https://www.streamertextcard.com/en
@@ -66,6 +67,9 @@ sudo yum install wqy-zenhei-fonts.noarch -y
 
 - node版本必须大于18
 - 如果非中国大陆用户或开启了VPN，请根据代码中的提示将服务器切换至海外版避免请求超时
+
+### 手动安装环境部署 linux
+保姆级教程：Linux (Ubuntu) 部署流光卡片开源 API：https://blog.csdn.net/weixin_46184095/article/details/140297726
 
 ### Docker执行
 
@@ -216,6 +220,8 @@ node src/index.js
 
 ##### 请求示例
 
+本地部署后请求地址：http://localhost:3003/saveImg
+
 ```json
 {
     "temp": "tempB",
@@ -249,6 +255,8 @@ node src/index.js
 推特：@huangzh65903362
 
 即刻：https://web.okjike.com/u/ec41d7d5-407d-4395-ac8a-bd0f04fb202c
+
+小红书：https://www.xiaohongshu.com/user/profile/6220bf22000000001000e083
 
 <img src="./assets/hzy_wx.jpg" alt="hzy_wx" style="zoom: 33%;" />
 
