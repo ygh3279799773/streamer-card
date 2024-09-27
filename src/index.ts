@@ -74,8 +74,8 @@ async function processRequest(req) {
     let iconSrc = body.icon;
     // 是否使用字体
     let useLoadingFont = body.useLoadingFont;
-    // let params = new URLSearchParams({isAPI: true}); // 初始化 URL 查询参数
     let params = new URLSearchParams(); // 初始化 URL 查询参数
+    // params.append("isApi","true")
     let blackArr = ['icon', 'switchConfig', 'content', 'translate']; // 定义不需要加入查询参数的键
 
     for (const key in body) {
@@ -101,7 +101,7 @@ async function processRequest(req) {
             }
         });
 
-        const viewPortConfig = {width: 1920, height: 1080}; // 设置视口配置
+        const viewPortConfig = {width: 1920, height: 1080+200}; // 设置视口配置
         await page.setViewport(viewPortConfig); // 应用视口配置
         console.log('视口设置为:', viewPortConfig);
 
@@ -116,7 +116,8 @@ async function processRequest(req) {
             await page.waitForFunction('document.fonts.status === "loaded"');
         }
 
-        await delay(1000)
+        // 这里因为字体是按需加载，所以前面的等待字体加载不太有效，这里增大等待时间，以免部分字体没有加载完成
+        await delay(3000)
 
         // const cardElement = await page.$(`#${body.temp || 'tempA'}`); // 查找卡片元素
         const cardElement = await page.$(`.${body.temp || 'tempA'}`);
@@ -170,7 +171,7 @@ async function processRequest(req) {
 
         const boundingBox = await cardElement.boundingBox(); // 获取卡片元素边界框
         if (boundingBox.height > viewPortConfig.height) {
-            await page.setViewport({width: 1920, height: Math.ceil(boundingBox.height)}); // 调整视口高度
+            await page.setViewport({width: 1920, height: Math.ceil(boundingBox.height)+200}); // 调整视口高度
         }
         console.log('找到边界框并调整视口');
         let imgScale = body.imgScale ? body.imgScale: scale;
