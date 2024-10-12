@@ -75,7 +75,7 @@ async function processRequest(req) {
     // 是否使用字体
     let useLoadingFont = body.useLoadingFont;
     let params = new URLSearchParams(); // 初始化 URL 查询参数
-    // params.append("isApi","true")
+    params.append("isApi","true")
     let blackArr = ['icon', 'switchConfig', 'content', 'translate']; // 定义不需要加入查询参数的键
 
     for (const key in body) {
