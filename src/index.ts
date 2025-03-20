@@ -1,15 +1,35 @@
-const express = require('express'); // 引入 Express 框架
-const {Cluster} = require('puppeteer-cluster'); // 引入 Puppeteer Cluster 库，用于并发浏览器任务
-const MarkdownIt = require('markdown-it'); // 引入 Markdown-It 库，用于解析 Markdown 语法
-const md = new MarkdownIt({breaks: false}); // 初始化 Markdown-It，并设置换行符解析选项
-const {LRUCache} = require('lru-cache'); // 引入 LRU 缓存库，并注意其导入方式
+// 引入 Puppeteer Cluster 库，用于并发浏览器任务
+import MarkdownIt from "markdown-it"; // 引入 Markdown-It 库，用于解析 Markdown 语法
+import cors from 'cors'; // 引入 cors 中间件
+
+// 引入 Express 框架
+import {Cluster} from "puppeteer-cluster";
+import express from "express";
+// 初始化 Markdown-It，并设置换行符解析选项
+import {LRUCache} from "lru-cache"; // 引入 LRU 缓存库，并注意其导入方式
+import {markdownItTable} from 'markdown-it-table';
+
+const md = new MarkdownIt({
+    html: true, // 允许 markdown 文本使用 html 标签
+    linkify: false, // 禁用自动转换 URL
+    typographer: true,// 智能排版
+}).use(markdownItTable);
+
 const port = 3003; // 设置服务器监听端口
-const url = 'https://fireflycard.shushiai.com/'; // 要访问的目标 URL
-// const url = 'http://localhost:3000/'; // 要访问的目标 URL
+let url = 'https://fireflycard.shushiai.com/zh/reqApi'; // 要访问的目标 URL
+// let url = 'http://localhost:3001/zh/reqApi'; // 要访问的目标 URL
 const scale = 2; // 设置截图的缩放比例，图片不清晰就加大这个数值
 const maxRetries = 3; // 设置请求重试次数
 const maxConcurrency = 10; // 设置 Puppeteer 集群的最大并发数
 const app = express(); // 创建 Express 应用
+
+// 配置 CORS 中间件，允许所有跨域请求
+app.use(cors({
+    origin: '*', // 允许任何来源
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // 允许的 HTTP 方法
+    allowedHeaders: ['Content-Type', 'Authorization'] // 允许的请求头
+}));
+
 app.use(express.json()); // 使用 JSON 中间件
 app.use(express.urlencoded({extended: false})); // 使用 URL 编码中间件
 
@@ -19,7 +39,7 @@ let cluster; // 定义 Puppeteer 集群变量
 const cache = new LRUCache({
     max: 100, // 缓存最大项数，可以根据需要调整
     maxSize: 50 * 1024 * 1024, // 最大缓存大小 50MB
-    sizeCalculation: (value, key) => {
+    sizeCalculation: (value: any, key: any) => {
         return value.length; // 缓存项大小计算方法
     },
     ttl: 600 * 1000, // 缓存项 10 分钟后过期
@@ -36,7 +56,7 @@ async function initCluster() {
             args: [
                 '--disable-dev-shm-usage', // 禁用 /dev/shm 使用
                 '--disable-setuid-sandbox', // 禁用 setuid sandbox
-                '--no-first-run', // 禁止首次运行
+                '--no-first-run', // 禁止首次运行流程，例如导入书签，设置默认引擎等等
                 '--no-sandbox', // 禁用沙盒模式
                 '--no-zygote' // 禁用 zygote
             ],
@@ -59,8 +79,7 @@ function generateCacheKey(body) {
 }
 
 // 处理请求的主要逻辑
-async function processRequest(req) {
-    const body = req.body; // 获取请求体
+async function processRequest(body) {
     const cacheKey = generateCacheKey(body); // 生成缓存键
 
     // 检查缓存中是否有结果
@@ -70,21 +89,61 @@ async function processRequest(req) {
         return cachedResult; // 返回缓存结果
     }
 
+    // 根据语言初始化链接
+    let language = body?.language;
+    if (language) {
+        url = url.replace('zh',language)
+    }
+
     console.log('处理请求，内容为:', JSON.stringify(body));
-    let iconSrc = body.icon;
     // 是否使用字体
     let useLoadingFont = body.useLoadingFont;
+
     let params = new URLSearchParams(); // 初始化 URL 查询参数
-    params.append("isApi","true")
-    let blackArr = ['icon', 'switchConfig', 'content', 'translate']; // 定义不需要加入查询参数的键
+
+    params.append("isApi", "true")
+
+    let blackArr: string[] = ['icon', 'translate', 'content']; // 定义不需要加入查询参数的键
+
+    let translate = body.translate;
+    if (!translate) {
+        translate = body?.form?.translate
+    }
+
+    let content = body.content;
+    if (!content) {
+        content = body?.form?.content
+    }
+
+    let iconSrc = body.icon;
+    if (!iconSrc) {
+        iconSrc = body?.form?.icon
+    }
 
     for (const key in body) {
+        let value = body[key];
         if (!blackArr.includes(key)) {
-            params.append(key, body[key]); // 添加其他参数
-        } else if (key === 'switchConfig') {
-            params.append(key, JSON.stringify(body[key])); // 序列化 switchConfig
+            if (key === 'switchConfig' || key === 'fonts' || key === 'style') {
+                let valueStr = JSON.stringify(value);
+                console.log('valueStr',valueStr)
+                params.append(key, valueStr); // 序列化 switchConfig
+            } else if(key === 'form'){
+                delete value.content;
+                delete value.translate;
+                delete value.iconSrc;
+                let valueStr = JSON.stringify(value);
+                console.log('FormValueStr',valueStr)
+                params.append(key, valueStr);
+            } else{
+                params.append(key, value);
+            }
         }
     }
+
+    let finalUrl = url + '?' + params.toString();
+
+
+    console.log('finalUrl', finalUrl);
 
     const result = await cluster.execute({
         url: url + '?' + params.toString(), // 拼接 URL 和查询参数
@@ -94,39 +153,30 @@ async function processRequest(req) {
         const {url, body, iconSrc} = data;
         await page.setRequestInterception(true); // 设置请求拦截
         page.on('request', req => {
-            if (!useLoadingFont && req.resourceType() === 'font') {
-                req.abort(); // 拦截字体请求
-            } else {
-                req.continue(); // 继续其他请求
-            }
+            req.continue();
         });
 
-        const viewPortConfig = {width: 1920, height: 1080+200}; // 设置视口配置
+        const viewPortConfig = {width: 1920, height: 1080}; // 设置视口配置
         await page.setViewport(viewPortConfig); // 应用视口配置
         console.log('视口设置为:', viewPortConfig);
 
         await page.goto(url, {
-            timeout: 60000, // 设置导航超时
+            timeout: 120000, // 设置导航超时
             waitUntil: ['load', 'networkidle2'] // 等待页面加载完成
         });
         console.log('页面已导航至:', url);
 
-        // 等待字体加载完成
-        if (useLoadingFont) {
-            await page.waitForFunction('document.fonts.status === "loaded"');
-        }
-
-        // 这里因为字体是按需加载，所以前面的等待字体加载不太有效，这里增大等待时间，以免部分字体没有加载完成
         await delay(3000)
 
+        // 这里因为字体是按需加载，所以前面的等待字体加载不太有效，这里增大等待时间，以免部分字体没有加载完成
         // const cardElement = await page.$(`#${body.temp || 'tempA'}`); // 查找卡片元素
-        const cardElement = await page.$(`.${body.temp || 'tempA'}`);
+        const cardElement = await page.$(`.${body.temp || 'tempA'}`); // 查找卡片元素
+        // const cardElement = await page.$(`.content-mode`);
         if (!cardElement) {
             throw new Error('请求的卡片不存在'); // 抛出错误
         }
         console.log('找到卡片元素');
 
-        let translate = body.translate;
         if (translate) {
             await page.evaluate((translate: string) => {
                 // 如果有英文翻译插入英文翻译
@@ -135,14 +185,12 @@ async function processRequest(req) {
             }, translate);
         }
 
-        let content = body.content;
-        let isContentHtml:boolean = body.isContentHtml;
+        let isContentHtml: boolean = body.isContentHtml;
         if (content) {
             let html = content;
-             if (!isContentHtml) {
-                 content = content.replace(/\n\n/g, '--br----br--');
+            if (!isContentHtml) {
                 html = md.render(content);
-                html = html.replace(/--br--/g, '<br/>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+                html = `<div data-v-fc3bb97c="" contenteditable="true" translate="no" name="editableText" class="editable-element md-class">${html}</div>`
             }
             await page.evaluate(html => {
                 // 插入内容
@@ -153,14 +201,18 @@ async function processRequest(req) {
         }
 
         if (iconSrc && iconSrc.startsWith('http')) {
-            await page.evaluate(function(imgSrc) {
-                return new Promise(function(resolve) {
-                    var imageElement:any = document.querySelector('#icon');
+            await page.evaluate(function (imgSrc) {
+                return new Promise(function (resolve) {
+                    let imageElement: any = document.querySelector('#icon');
                     console.log("头像", imageElement);
                     if (imageElement) {
                         imageElement.src = imgSrc;
-                        imageElement.addEventListener('load', function() { resolve(true); });
-                        imageElement.addEventListener('error', function() { resolve(true); });
+                        imageElement.addEventListener('load', function () {
+                            resolve(true);
+                        });
+                        imageElement.addEventListener('error', function () {
+                            resolve(true);
+                        });
                     } else {
                         resolve(false);
                     }
@@ -170,11 +222,20 @@ async function processRequest(req) {
         }
 
         const boundingBox = await cardElement.boundingBox(); // 获取卡片元素边界框
+        console.log('boundingBox', boundingBox);
+
+        let imgScale = body.imgScale ? body.imgScale : scale;
+
         if (boundingBox.height > viewPortConfig.height) {
-            await page.setViewport({width: 1920, height: Math.ceil(boundingBox.height)+200}); // 调整视口高度
+            console.log('卡片高度大于视口高度，需要截取图片',boundingBox.height);
+            const newHeight = Math.max(Math.floor(boundingBox.height))+200;  // 确保最小高度为 2000px
+            await page.setViewport({
+                width: 1920,
+                height: newHeight
+            });
+            console.log('调整视口高度:', newHeight);
         }
-        console.log('找到边界框并调整视口');
-        let imgScale = body.imgScale ? body.imgScale: scale;
+
         console.log('图片缩放比例为:', imgScale)
         const buffer = await page.screenshot({
             type: 'png', // 设置截图格式为 PNG
@@ -204,12 +265,40 @@ async function processRequest(req) {
     return result; // 返回处理结果
 }
 
-// 处理保存图片的 POST 请求
-app.post('/saveImg', async (req, res) => {
+/**4
+ * 写一个对象数组，包含三个属性
+ * qrcodetitle 二维码头部
+ * qrcodetext 二维码描述文字
+ * qrcode 你的二维码链接
+ */
+const qrcodeArr:any[] = [
+    {
+        qrcodetitle: '流光卡片',
+        qrcodetext: '让分享更美好',
+        qrcode: 'https://textcard.shushiai.com/zh'
+    },
+    {
+        qrcodetitle: '扫码添加微信',
+        qrcodetext: '插件作者：嵬hacking',
+        qrcode: 'https://u.wechat.com/MLY1YU64xqoNul2tibIJo6A'
+    }
+]
+
+
+async function saveImgHandle(req: any, res: any, flag: boolean) {
+    let body = req.body;
+    if (flag) {
+        // 随机从 qrcodeArr 中抽取一个元素
+        const qrcodeObj = qrcodeArr[Math.floor(Math.random() * qrcodeArr.length)];
+        // 覆盖 body 中对应的元素属性
+        body.qrcodetitle = qrcodeObj.qrcodetitle;
+        body.qrcodetext = qrcodeObj.qrcodetext;
+        body.qrcode = qrcodeObj.qrcode;
+    }
     let attempts = 0;
     while (attempts < maxRetries) {
         try {
-            const buffer = await processRequest(req); // 处理请求
+            const buffer = await processRequest(body); // 处理请求
             res.setHeader('Content-Type', 'image/png'); // 设置响应头
             res.status(200).send(buffer); // 发送响应
             return;
@@ -223,6 +312,21 @@ app.post('/saveImg', async (req, res) => {
             }
         }
     }
+}
+
+// 处理保存图片的 POST 请求
+app.post('/api/saveImg', async (req: any, res: any) => {
+    await saveImgHandle(req, res, false)
+});
+
+// 广告位请求
+app.post('/api/wxSaveImg', async (req: any, res: any) => {
+    await saveImgHandle(req, res, true)
+});
+
+// 写一个接口，不需要任何 uri，请求端口，返回 hello world
+app.get('/api', (req, res) => {
+    res.send('hello world');
 });
 
 // 处理进程终止信号
@@ -239,6 +343,7 @@ app.listen(port, async () => {
 });
 
 // 延迟函数，用于等待指定的毫秒数
-function delay(timeout) {
+function delay(timeout: number) {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
+

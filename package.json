@@ -9,12 +9,15 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@types/cors": "^2.8.17",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "lru-cache": "^10.4.3",
     "markdown-it": "^14.1.0",
+    "markdown-it-table": "^4.1.1",
     "nodemon": "^3.1.4",
-    "puppeteer": "^22.12.1",
-    "puppeteer-cluster": "^0.24.0",
+    "puppeteer": "22.12.1",
+    "puppeteer-cluster": "0.24.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
